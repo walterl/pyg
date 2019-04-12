@@ -103,9 +103,17 @@ def collect_string_fns(options):
     return fns
 
 
+def make_regex(pattern, options):
+    flags = 0
+    if options.get('ignore_case'):
+        flags |= re.IGNORECASE
+
+    return re.compile(pattern, flags)
+
+
 def grep(pattern, filepaths, options=None):
     seen_lines = set()
-    rx = re.compile(pattern)
+    rx = make_regex(pattern, options)
 
     string_fns = collect_string_fns(options)
     log.debug('String functions: %r', string_fns)
@@ -143,6 +151,10 @@ def create_arg_parser():
     parser = argparse.ArgumentParser(description='PYthon Grep')
 
     parser.add_argument('--verbose', '-v', action='store_true')
+    parser.add_argument(
+        '--ignore-case', '-i', action='store_true',
+        help='Match case insensitively.'
+    )
     parser.add_argument('PATTERN', help='Pattern to search for.')
     parser.add_argument('PATH', nargs='?')
 
@@ -174,7 +186,10 @@ def main():
         'm': 'include_method_calls',
     }
 
-    options = {}
+    options = {
+        'ignore_case': args.ignore_case,
+    }
+
     for char in args.elem:
         if char not in elem_options:
             raise ValueError('Invalid language element option: %r' % (char,))
