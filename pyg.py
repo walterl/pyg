@@ -14,6 +14,7 @@ import nodestrings
 DOTSLASH = os.curdir + os.sep
 SOURCE_FILE_EXTENSIONS = ('.py', '.pyx')
 
+logging.basicConfig()
 log = logging.getLogger()
 
 
@@ -113,7 +114,7 @@ def grep(pattern, filepaths, options=None):
         try:
             ast_root = ast.parse('\n'.join(lines), filename=filepath)
         except Exception:
-            log.exception('Unable to parse %r:', filepath)
+            log.debug('Unable to parse %r:', filepath)
             continue
 
         for node in ast.walk(ast_root):
