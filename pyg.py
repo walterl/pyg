@@ -8,10 +8,6 @@ import os
 import re
 import sys
 
-from pygments import highlight
-from pygments.formatters import TerminalFormatter
-from pygments.lexers import PythonLexer
-
 import nodestrings
 
 
@@ -29,6 +25,14 @@ def listify(x):
 
 def hilite(src):
     if not sys.stdout.isatty():
+        return src
+
+    try:
+        from pygments import highlight
+        from pygments.formatters import TerminalFormatter
+        from pygments.lexers import PythonLexer
+    except ImportError:
+        # Can't find pygments, so we can't highlight
         return src
 
     if not hasattr(hilite, '_lexer'):
