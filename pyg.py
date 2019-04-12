@@ -149,7 +149,8 @@ def create_arg_parser():
         '--elem', '-e', default='',
         help=(
             'Language elements to match on. Value must contain any of the '
-            'following characters: [c]all, [d]ef, [i]mports, [k]lass, [m]ethod'
+            'following characters: [c]all, [d]ef, [i]mports, [k]lass, '
+            '[m]ethod calls'
         )
     )
 
