@@ -69,4 +69,4 @@ team, you probably want to have a look at CheckSec's
 
 ## License
 
-[LGPLv2.1](https://github.com/walterl/pyg/blob/master/LICENSE)
+[LGPLv3](https://github.com/walterl/pyg/blob/master/LICENSE)
