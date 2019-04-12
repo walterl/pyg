@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
+
 import argparse
 import ast
 import logging
@@ -181,7 +183,7 @@ def main():
     had_results = False
     for result in grep(args.PATTERN, expand_path(args.PATH), options=options):
         had_results = True
-        print result
+        print(result)
 
     if not had_results:
         exit(1)

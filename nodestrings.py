@@ -4,6 +4,11 @@ which matching should be done.
 """
 
 import ast
+import sys
+
+
+if sys.version_info.major > 2:
+    basestring = str
 
 
 def node_id(node):
