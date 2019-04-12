@@ -205,7 +205,10 @@ def main():
     for char in args.elem:
         if char not in elem_options:
             raise ValueError('Invalid language element option: %r' % (char,))
-        options[elem_options[char]] = True
+
+    for char, include_option in elem_options.items():
+        if char in args.elem or not args.elem:
+            options[elem_options[char]] = True
 
     had_results = False
     for result in grep(args.PATTERN, expand_path(args.PATH), options=options):
