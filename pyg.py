@@ -127,6 +127,7 @@ def grep(pattern, filepaths, options=None):
             log.debug('Unable to parse %r:', filepath)
             continue
 
+        seen_files = set()
         for node in ast.walk(ast_root):
             if not hasattr(node, 'lineno'):
                 continue
@@ -140,10 +141,14 @@ def grep(pattern, filepaths, options=None):
             for nid in ids:
                 if rx.search(nid) and seen_key not in seen_lines:
                     seen_lines.add(seen_key)
-                    match = '{}:{}:{}'.format(
-                        filepath, node.lineno, hilite(lines[node.lineno-1])
-                    )
-                    yield match
+                    if options.get('files_with_matches'):
+                        if filepath not in seen_files:
+                            seen_files.add(filepath)
+                            yield filepath
+                    else:
+                        yield '{}:{}:{}'.format(
+                            filepath, node.lineno, hilite(lines[node.lineno-1])
+                        )
                     break
 
 
@@ -154,6 +159,12 @@ def create_arg_parser():
     parser.add_argument(
         '--ignore-case', '-i', action='store_true',
         help='Match case insensitively.'
+    )
+    parser.add_argument(
+        '--files-with-matches', '-l', action='store_true',
+        help=(
+            'Only print names of files containing matches, not matching lines.'
+        )
     )
     parser.add_argument('PATTERN', help='Pattern to search for.')
     parser.add_argument('PATH', nargs='?')
@@ -187,6 +198,7 @@ def main():
     }
 
     options = {
+        'files_with_matches': args.files_with_matches,
         'ignore_case': args.ignore_case,
     }
 
